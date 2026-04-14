@@ -73,6 +73,7 @@ return {
               NeoTreeTabSeparatorInactive = { fg = colors.crust, bg = colors.crust },
               NeoTreeWinSeparator = { fg = colors.base, bg = colors.base },
               NormalFloat = { bg = colors.base },
+              LspInlayHint = { fg = colors.overlay1, bg = colors.surface1, style = { 'italic' } },
               Pmenu = { bg = colors.mantle, fg = '' },
               PmenuSel = { bg = colors.surface0, fg = '' },
               TelescopePreviewBorder = { bg = colors.crust, fg = colors.crust },
