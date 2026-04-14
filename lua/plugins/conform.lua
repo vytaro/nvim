@@ -8,8 +8,26 @@ return {
 
       conform.setup {
         format_on_save = {
-          timeout_ms = 500,
+          timeout_ms = 3000,
           lsp_fallback = true,
+        },
+
+        formatters = {
+          pint_local = {
+            command = 'pint',
+            stdin = false,
+            cwd = function(self, ctx)
+              local util = require('lspconfig').util
+              return util.search_ancestors(ctx.filename, function(path)
+                if util.path.exists(util.path.join(path, 'artisan')) then
+                  return path
+                end
+              end)
+            end,
+            args = function(self, ctx)
+              return { ctx.filename }
+            end,
+          },
         },
 
         formatters_by_ft = {
@@ -27,14 +45,14 @@ return {
           go = { 'go fmt' },
           php = function()
             local util = require('lspconfig').util
-            return function(params)
-              local root = util.root_pattern('artisan', 'composer.json', '.git')(params.bufname)
-              if root and util.path.exists(util.path.join(root, 'artisan')) then
-                return { 'pint' }
-              else
-                return { 'php-cs-fixer' }
-              end
+            local fname = vim.api.nvim_buf_get_name(0)
+            local laravel_root = util.search_ancestors(fname, function(path)
+              return util.path.exists(util.path.join(path, 'artisan'))
+            end)
+            if laravel_root then
+              return { 'pint_local' }
             end
+            return { 'php-cs-fixer' }
           end,
           qml = { 'qmlfmt' },
           rust = { 'rustfmt' },
