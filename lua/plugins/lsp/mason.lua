@@ -9,7 +9,7 @@ return {
     dependencies = { 'williamboman/mason.nvim' },
     config = function()
       require('mason-lspconfig').setup {
-        ensured_installed = require('nixCatsUtils').lazyAdd {
+        ensure_installed = require('nixCatsUtils').lazyAdd {
           'cmake',
           'pyright',
           'html',
